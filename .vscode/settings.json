@@ -1,0 +1,7 @@
+{
+    "java.inlayHints.parameterNames.enabled": "none",
+    "files.autoSave": "afterDelay",
+    "java.project.sourcePaths": ["src"],
+    "java.project.outputPath": "bin",
+    "chat.disableAIFeatures": true
+}
