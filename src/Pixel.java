@@ -9,7 +9,6 @@ public class Pixel {
         return "rgb(" + getRed() + ", " + getGreen() + ", " + getBlue() + ")";
     }
 
-
     public Pixel(){
         setRed(0);
         setGreen(0);
