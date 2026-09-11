@@ -5,5 +5,9 @@ public class Driver {
         Pixel p1;
         p1 = new Pixel(122, 33, 44);
         System.out.println(p1.toString());
+
+        Icon I2;
+        I2 = new Icon();
+        System.out.println(I2.toString());
     }
 }
