@@ -9,6 +9,13 @@ public class Pixel {
         return "rgb(" + getRed() + ", " + getGreen() + ", " + getBlue() + ")";
     }
 
+
+    public Pixel(){
+        setRed(0);
+        setGreen(0);
+        setBlue(0);
+    }
+
     public Pixel(int r, int g, int b){
         setRed(r);
         setGreen(g);
