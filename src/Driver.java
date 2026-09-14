@@ -3,11 +3,12 @@ public class Driver {
         System.out.println("Pixel Icon");
 
         Pixel p1;
-        p1 = new Pixel(122, 33, 44);
+        p1 = new Pixel(5647382);
         System.out.println(p1.toString());
+        System.out.println(p1.toStringHex());
 
-        Icon I2;
-        I2 = new Icon();
-        System.out.println(I2.toString());
+        //Icon I2;
+        //I2 = new Icon();
+        //System.out.println(I2.toString());
     }
 }

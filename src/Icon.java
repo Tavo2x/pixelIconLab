@@ -9,7 +9,7 @@ public class Icon {
         for (int row = 0; row < 5; row++){
             ArrayList <Pixel> currentRow = new ArrayList <Pixel>(); 
             for (int col =0; col <5; col++){
-                currentRow.add(new Pixel(0,0,0));
+                currentRow.add(new Pixel(0));
             }
             pixels.add(currentRow);
         }
@@ -20,7 +20,7 @@ public class Icon {
         for (int row = 0; row < rows; row++){
             ArrayList <Pixel> currentRow = new ArrayList<Pixel>(); 
             for (int col =0; col < cols; col++){
-                currentRow.add(new Pixel(0, 0, 0));
+                currentRow.add(new Pixel(0));
             }
             pixels.add(currentRow);
         }
