@@ -3,11 +3,14 @@ public class Pixel {
     private int rgb;
 
     public String toString(){
+        
         return "rgb(" + getRed() + ", " + getGreen() + ", " + getBlue() + ")";
     }
 
     public String toStringHex(){
-        return (Integer.toHexString(rgb));
+        StringBuilder hex = new StringBuilder(String.format("%06X",rgb));
+        hex.insert(0,'#');
+        return hex.toString();
     }
 
     public Pixel(){
