@@ -6,9 +6,9 @@ public class Icon {
 
     public Icon(){
         pixels = new ArrayList <ArrayList<Pixel>>();
-        for (int row = 0; row < 5; row++){
+        for (int row = 0; row <= 39; row++){
             ArrayList <Pixel> currentRow = new ArrayList <Pixel>(); 
-            for (int col =0; col <5; col++){
+            for (int col =0; col <= 39; col++){
                 currentRow.add(new Pixel(0));
             }
             pixels.add(currentRow);
@@ -75,7 +75,7 @@ public class Icon {
         
         for (int rows = 0; rows < pixels.size(); rows++){
             for (int col =0; col < pixels.get(rows).size(); col++){
-                output += pixels.get(rows).get(col).toString();
+                output += pixels.get(rows).get(col).toStringHex();
                 output += "\t";
             }
             output += "\n";
