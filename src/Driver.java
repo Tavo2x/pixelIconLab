@@ -15,8 +15,8 @@ public class Driver {
         I2.setRed(0, 0, 225);
         I2.setGreen(0, 4, 225);
         I2.setBlue(4, 0, 225);
-        
-
         System.out.println(I2.toString());
+
+        
     }
 }
