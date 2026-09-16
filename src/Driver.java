@@ -7,8 +7,8 @@ public class Driver {
         System.out.println(p1.toString());
         System.out.println(p1.toStringHex());
 
-        //Icon I2;
-        //I2 = new Icon();
-        //System.out.println(I2.toString());
+        Icon I2;
+        I2 = new Icon();
+        System.out.println(I2.toString());
     }
 }
