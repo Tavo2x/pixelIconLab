@@ -11,11 +11,12 @@ public class Driver {
         //I1 = new Icon();
         //System.out.println(I1.toString());
 
-        Icon I2 = new Icon(2,2);
+        Icon I2 = new Icon(5,5);
         I2.setRed(0, 0, 225);
-        I2.setGreen(0, 1, 225);
-        I2.setBlue(1, 0, 225);
+        I2.setGreen(0, 4, 225);
+        I2.setBlue(4, 0, 225);
+        
 
-         System.out.println(I2.toString());
+        System.out.println(I2.toString());
     }
 }
