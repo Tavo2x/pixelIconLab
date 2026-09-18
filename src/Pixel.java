@@ -25,11 +25,11 @@ public class Pixel {
 
     public void setRed(int r){
         if (r >= 0 && r <= 255){
-            rgb = (rgb & 0xFFFF00) | r;
+            rgb = (rgb & 0x00FFFF) | r << 16;
         }
     }
     public int getRed(){
-        return (rgb & 0x0000FF);
+        return (rgb >> 16 & 0x0000FF);
     }
 
     public void setGreen(int g){
@@ -43,10 +43,10 @@ public class Pixel {
 
     public void setBlue(int b){
         if (b >= 0 && b <= 255){
-            rgb = (rgb & 0x00FFFF) | b << 16;
+            rgb = (rgb & 0xFFFF00) | b;
         }
     }
     public int getBlue(){
-        return (rgb >> 16 & 0x0000FF);
+        return (rgb & 0x0000FF);
     }
 }
