@@ -82,4 +82,9 @@ public class Icon {
         }
         return output;
     }
+    public void setPixel(int row, int col, int r, int g, int b){
+        setRed(row, col, r);
+        setGreen(row, col, g);
+        setBlue(row, col, b);
+    }
 }
