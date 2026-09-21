@@ -17,14 +17,26 @@ public class Driver {
         //I2.setBlue(4, 0, 225);
         //System.out.println(I2.toString());
 
-        Icon I3 = new Icon(7,8);
+        //Icon I3 = new Icon(7,8);
 
-        I3.setPixel(0, 0, 225, 0, 0);
-        I3.setPixel(0, 7, 0, 255, 0);
-        I3.setPixel(6, 0, 0, 0, 255);
-        I3.setPixel(6, 7, 255, 255, 255);
+        //I3.setPixel(0, 0, 225, 0, 0);
+        //I3.setPixel(0, 7, 0, 255, 0);
+        //I3.setPixel(6, 0, 0, 0, 255);
+        //I3.setPixel(6, 7, 255, 255, 255);
 
-        System.out.println(I3.toString());
+        //I3.createBipmapfile("icon.bmp");
+
+        Icon I4 = new Icon(5,5);
+
+        I4.setPixel(0, 0, 255, 0, 0);
+        I4.setPixel(0, 4, 0, 255, 0);
+        I4.setPixel(4, 0, 0, 0, 255);
+        I4.setPixel(4, 4, 255, 255, 255);
+
+        System.out.println(I4);
+
+        I4.createBipmapfile("icon.bmp");
+
 
     }
 }
