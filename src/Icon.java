@@ -1,3 +1,5 @@
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 
 public class Icon {
@@ -82,9 +84,83 @@ public class Icon {
         }
         return output;
     }
+
     public void setPixel(int row, int col, int r, int g, int b){
         setRed(row, col, r);
         setGreen(row, col, g);
         setBlue(row, col, b);
+    }
+
+    public void createBipmapfile (String filename){
+        ArrayList <Byte> fileBytes = new ArrayList<>();
+
+        int height = pixels.size();
+        int width = pixels.get(0).size();
+        int rowBytes = width * 3;
+        int padding = rowBytes % 4;
+
+        if (padding != 0){
+            padding = 4 - padding;
+        }
+
+        int pixelDataSize = (rowBytes + padding) * height;
+        int fileSize = pixelDataSize + 54;
+
+        fileBytes.add((byte) 'B');
+        fileBytes.add((byte) 'M');
+
+        convertLittleEndian4(fileSize, fileBytes);
+        convertLittleEndian2(0, fileBytes);
+        convertLittleEndian2(0, fileBytes);
+        convertLittleEndian4(54, fileBytes);
+        convertLittleEndian4(40, fileBytes);
+        convertLittleEndian4(width, fileBytes);
+        convertLittleEndian4(height, fileBytes);
+        convertLittleEndian2(1, fileBytes);
+        convertLittleEndian2(24, fileBytes);
+        convertLittleEndian4(0, fileBytes);
+        convertLittleEndian4(pixelDataSize, fileBytes);
+        convertLittleEndian4(0, fileBytes);
+        convertLittleEndian4(0, fileBytes);
+        convertLittleEndian4(0, fileBytes);
+        convertLittleEndian4(0, fileBytes);
+
+
+        for (int row = height-1; row >=0; row--){
+            for (int col = 0; col < width; col++){
+
+                fileBytes.add((byte)getBlue(row, col));
+                fileBytes.add((byte)getGreen(row, col));
+                fileBytes.add((byte)getRed(row, col));
+            }
+            for (int i = 0; i < padding ; i ++){
+                fileBytes.add((byte)0);
+            }
+        }
+
+        byte[] data = new byte[fileBytes.size()];
+
+        for (int i = 0; i < fileBytes.size(); i ++){
+            data[i] = fileBytes.get(i);
+        }
+
+        try (FileOutputStream out = new FileOutputStream(filename)){
+            out.write(data);
+        } catch (Exception e) {
+            System.out.println("Error writing out file");
+        }
+        
+    }
+
+    public void convertLittleEndian2(int val, ArrayList <Byte> fileBytes ){
+        fileBytes.add((byte)val);
+        fileBytes.add((byte) (val >> 8));
+    }
+
+    public void convertLittleEndian4(int val, ArrayList <Byte> fileBytes){
+        fileBytes.add((byte)val);
+        fileBytes.add((byte) (val >> 8));
+        fileBytes.add((byte) (val >> 16));
+        fileBytes.add((byte) (val >> 24));
     }
 }
