@@ -26,16 +26,17 @@ public class Driver {
 
         //I3.createBipmapfile("icon.bmp");
 
-        Icon I4 = new Icon(5,5);
+        // Example of an icon
+        Icon I4 = new Icon(5,5); // Icon of 5 by 5
 
-        I4.setPixel(0, 0, 255, 0, 0);
-        I4.setPixel(0, 4, 0, 255, 0);
-        I4.setPixel(4, 0, 0, 0, 255);
-        I4.setPixel(4, 4, 255, 255, 255);
+        I4.setPixel(0, 0, 255, 0, 0); // Red top left
+        I4.setPixel(0, 4, 0, 255, 0); // Green top right
+        I4.setPixel(4, 0, 0, 0, 255); // Blue bottom left
+        I4.setPixel(4, 4, 255, 255, 255); // White bottom right
 
-        System.out.println(I4);
+        System.out.println(I4); // Hexadecimal
 
-        I4.createBipmapfile("icon.bmp");
+        I4.createBipmapfile("icon.bmp"); // Creation of icon
 
 
     }
