@@ -34,7 +34,7 @@ public class Driver {
         I4.setPixel(4, 0, 0, 0, 255); // Blue bottom left
         I4.setPixel(4, 4, 255, 255, 255); // White bottom right
 
-        System.out.println(I4); // Hexadecimal
+        System.out.println(I4); // Ouput in the terminal showing hexadecimal format
 
         I4.createBipmapfile("icon.bmp"); // Creation of icon
 
