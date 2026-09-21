@@ -119,6 +119,7 @@ public class Icon {
 
     // Method that creats bitmap. 
     // Below is the process of converting certain values into either little endian 2 or 4
+    // https://en.wikipedia.org/wiki/BMP_file_format#Example
     public void createBipmapfile (String filename){
         // List that holds the bytes of the file
         ArrayList <Byte> fileBytes = new ArrayList<>();
