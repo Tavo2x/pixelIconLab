@@ -19,6 +19,9 @@ public class Icon {
 
     // Creats a unique icon where the user can initalize its size 
     public Icon(int rows, int cols){
+        if (rows <= 0 || cols <= 0 ){
+            throw new IllegalArgumentException("The number of rows and columns must be greater than zero");
+        }
         pixels = new ArrayList <ArrayList<Pixel>>();
         for (int row = 0; row < rows; row++){
             ArrayList <Pixel> currentRow = new ArrayList<Pixel>(); 
