@@ -1,5 +1,4 @@
 import java.awt.BorderLayout;
-import java.awt.Button;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout; 
@@ -30,16 +29,16 @@ public class BitmapGUI extends JFrame{
     private JPanel buttonLayout;
     private JPanel colorChooserPanel;
     private JPanel colorPreviewPanel;
+    private JPanel[] lastFiveColorsPanel;
+    private JPanel lastFiveColorsLayout;
 
     private JSlider redSlider;
     private JSlider greenSlider;
     private JSlider blueSlider;
 
-
     private Icon icon;
     private ArrayList <ArrayList<JButton>> buttonGrid;
-
-
+    private ArrayList <Color> lastFiveColors;
 
     public BitmapGUI(){
 
@@ -76,8 +75,10 @@ public class BitmapGUI extends JFrame{
         icon = new Icon(height, width);
         buildGrid();
         colorChooser();
+        buildLastFiveColorsPanel();
         add(buttonLayout, BorderLayout.WEST);
         add(colorChooserPanel, BorderLayout.EAST);
+        add(lastFiveColorsLayout, BorderLayout.SOUTH);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         pack();		 
         setVisible(true);
@@ -85,6 +86,7 @@ public class BitmapGUI extends JFrame{
 
     private void buildGrid(){
         buttonGrid = new ArrayList<ArrayList<JButton>>();
+        lastFiveColors = new ArrayList<Color>();
         buttonLayout = new JPanel();
         buttonLayout.setLayout(new GridLayout(height,width));
 
@@ -104,9 +106,10 @@ public class BitmapGUI extends JFrame{
                         int b = blueSlider.getValue();
                         button.setBackground(new Color(r,g,b));
                         icon.setPixel(row, col, r, g, b);
+                        addToFiveColors(new Color(r,g,b));
                     }
                 });
-                //JButton button = new JButton();
+                //JButton button1 = new JButton();
                 //currentRow.add(button);
                 //buttonLayout.add(button);
                 currentRow.add(button);
@@ -125,6 +128,7 @@ public class BitmapGUI extends JFrame{
         blueSlider = new JSlider(0,255,0);
 
         colorPreviewPanel.setPreferredSize(new Dimension(50,50));
+        colorPreviewPanel.setBackground(new Color(0,0,0));
 
         colorChooserPanel.setLayout(new GridLayout(0,2));
         colorChooserPanel.add(new JLabel("Red:"));
@@ -149,4 +153,56 @@ public class BitmapGUI extends JFrame{
         blueSlider.addChangeListener(colorListener);
     }
 
+    private void addToFiveColors(Color c){
+        if(lastFiveColors.contains(c)){
+            return; // color already exists in the list,
+        }
+        lastFiveColors.add(0,c);
+        if(lastFiveColors.size() > 5){
+            lastFiveColors.remove(lastFiveColors.size()-1); // remove the last color
+        }
+        updateLastFiveColorsPanel();
+    }
+
+    private void buildLastFiveColorsPanel(){
+        lastFiveColorsPanel = new JPanel[5]; // array to hold the 5 colors
+        lastFiveColorsLayout = new JPanel(); // panel to hold the colors
+        lastFiveColorsLayout.setLayout(new GridLayout(1,5)); // one row 5 columns
+        for(int i=0; i < 5; i++){
+            lastFiveColorsPanel[i] = new JPanel(); // creating new panel for each color
+            lastFiveColorsPanel[i].setPreferredSize(new Dimension(30,30)); 
+            lastFiveColorsPanel[i].setBorder(javax.swing.BorderFactory.createLineBorder(Color.BLACK)); // ouline for each color panel to be visable
+            if(i < lastFiveColors.size()){ // if the 
+                lastFiveColorsPanel[i].setBackground(lastFiveColors.get(i)); // set the background color to the color in the list
+            }
+            else{
+                lastFiveColorsPanel[i].setBackground(Color.WHITE); // By default, there is no 5 colors in the list so set them as white
+            }
+            lastFiveColorsLayout.add(lastFiveColorsPanel[i]); // add the color panel to the layout
+            int index = i; 
+            lastFiveColorsPanel[i].addMouseListener(new java.awt.event.MouseAdapter() {
+                public void mouseClicked(java.awt.event.MouseEvent evt) {
+                    if(index >= lastFiveColors.size()) {
+                        return; // No color to select
+                    }
+                    Color selectedColor = lastFiveColors.get(index);
+                    redSlider.setValue(selectedColor.getRed());
+                    greenSlider.setValue(selectedColor.getGreen());
+                    blueSlider.setValue(selectedColor.getBlue());
+                }
+            });
+        }
+        updateLastFiveColorsPanel();
+    }
+
+    private void updateLastFiveColorsPanel(){ // Update the last five colors panel to show the current colors in the list
+        for(int i=0; i < 5; i++){
+            if(i < lastFiveColors.size()){
+                lastFiveColorsPanel[i].setBackground(lastFiveColors.get(i)); 
+            }
+            else{
+                lastFiveColorsPanel[i].setBackground(Color.WHITE);
+            }
+        }
+    }
 }
