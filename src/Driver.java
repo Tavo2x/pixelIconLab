@@ -1,3 +1,5 @@
+import javax.swing.UIManager;
+
 public class Driver {
     public static void main(String[] args) {
         System.out.println("Pixel Icon");
@@ -37,6 +39,8 @@ public class Driver {
         // System.out.println(I4); // Ouput in the terminal showing hexadecimal format
 
         // I4.createBipmapfile("icon.bmp"); // Creation of icon
+
+        try { UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName()); } catch (Exception e) { e.printStackTrace(); }
 
         new BitmapGUI();
 
