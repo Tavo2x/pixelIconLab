@@ -7,20 +7,27 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame; 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener; 
+import javax.swing.JFileChooser;
+import java.io.File;
 
 public class BitmapGUI extends JFrame{
 
 //- Varriables used throughout
     int height = 0;
     int width = 0;
+
+    private JButton bitMapButton;
+    private JCheckBox advancedOptionButton;
 
     private JTextField heightTXT;
     private JTextField widthTXT;
@@ -76,6 +83,8 @@ public class BitmapGUI extends JFrame{
         buildGrid();
         colorChooser();
         buildLastFiveColorsPanel();
+        buildBitmap();
+        addvancedButton();
         add(buttonLayout, BorderLayout.WEST);
         add(colorChooserPanel, BorderLayout.EAST);
         add(lastFiveColorsLayout, BorderLayout.SOUTH);
@@ -101,12 +110,6 @@ public class BitmapGUI extends JFrame{
                 button.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e){
-                        int r = redSlider.getValue();
-                        int g = greenSlider.getValue();
-                        int b = blueSlider.getValue();
-                        button.setBackground(new Color(r,g,b));
-                        icon.setPixel(row, col, r, g, b);
-                        addToFiveColors(new Color(r,g,b));
                     }
                 });
                 //JButton button1 = new JButton();
@@ -204,5 +207,31 @@ public class BitmapGUI extends JFrame{
                 lastFiveColorsPanel[i].setBackground(Color.WHITE);
             }
         }
+    }
+
+    private void buildBitmap(){
+        bitMapButton = new JButton("Create Bitmap");
+
+        bitMapButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                JFileChooser fileChooser = new JFileChooser();
+                int result = fileChooser.showSaveDialog(BitmapGUI.this);
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    File selectedFile = fileChooser.getSelectedFile();
+                    String filename = selectedFile.getAbsolutePath();
+                    icon.createBipmapfile(filename);
+                    JOptionPane.showMessageDialog(BitmapGUI.this, "Bitmap file created: " + filename);
+                }
+            }
+        });
+    }
+
+    private void addvancedButton(){
+        advancedOptionButton = new JCheckBox("Advanced");
+        JPanel topPanel = new JPanel();
+        topPanel.add(bitMapButton);
+        topPanel.add(advancedOptionButton);
+        add(topPanel, BorderLayout.NORTH);
     }
 }
