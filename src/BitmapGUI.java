@@ -52,6 +52,7 @@ public class BitmapGUI extends JFrame{
         heightTXT = new JTextField();
         widthTXT = new JTextField();
 
+//- Panel where the user is prompted to enter the dimensions of the icon
         panelDimensions = new JPanel();
         panelDimensions.setLayout(new GridLayout(2,2));
         panelDimensions.add(new JLabel("Height: "));
@@ -113,29 +114,86 @@ public class BitmapGUI extends JFrame{
                 button.setOpaque(true);
                 button.setContentAreaFilled(true);
                 button.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e){
+                    if (advancedOptionButton.isSelected()){
+                        JPanel fillPanel = new JPanel();
+                        fillPanel.setLayout(new GridLayout(2,2));
+                        JTextField rows = new JTextField();
+                        JTextField cols = new JTextField();
+                        fillPanel.add(new JLabel("Rows: "));
+                        fillPanel.add(rows);
+                        fillPanel.add(new JLabel("Cols: "));
+                        fillPanel.add(cols);
+
+                        JPanel importPanel = new JPanel();
+                        JButton chooseBMP = new JButton("Choose BMP File");
+                        importPanel.add(chooseBMP);
+                        chooseBMP.addActionListener(new ActionListener(){
+                            @Override
+                            public void actionPerformed(ActionEvent e){
+                                JFileChooser bmpChooser = new JFileChooser();
+                                int chooserResult = bmpChooser.showOpenDialog(BitmapGUI.this);
+                                if(chooserResult == JFileChooser.APPROVE_OPTION){
+                                    File selectedFile = bmpChooser.getSelectedFile();
+                            }
+                          }
+                        });
+                        JTabbedPane tabbedPane = new JTabbedPane();
+                        tabbedPane.addTab("Fill", fillPanel);
+                        tabbedPane.addTab("Import", importPanel);
+                        int result = JOptionPane.showConfirmDialog(BitmapGUI.this, tabbedPane, "Advanced Options", JOptionPane.OK_CANCEL_OPTION);
+                        if(result == JOptionPane.OK_OPTION){
+                            int selectedtab = tabbedPane.getSelectedIndex();
+                            if(selectedtab == 0){
+                                try{
+                                    int fillRows = Integer.parseInt(rows.getText());
+                                    int fillCols = Integer.parseInt(cols.getText());
+                                    for(int r = row; r < row + fillRows && r < height; r++){
+                                        for(int c = col; c < col + fillCols && c < width; c++){
+                                            int red = redSlider.getValue();
+                                            int green = greenSlider.getValue();
+                                            int blue = blueSlider.getValue();
+                                            buttonGrid.get(r).get(c).setBackground(new Color(red,green,blue));
+                                            icon.setPixel(r,c,red,green,blue);
+                                            addToFiveColors(new Color(red,green,blue));
+                                        }
+                                    }
+                        }catch(NumberFormatException ex){
+                                    JOptionPane.showMessageDialog(BitmapGUI.this, "Please enter valid integers for rows and columns.");
+                                }
+                            }
+                        }
                     }
+                    else{
+                        int r = redSlider.getValue();
+                        int g = greenSlider.getValue();
+                        int b = blueSlider.getValue();
+                        button.setBackground(new Color(r,g,b));
+                        icon.setPixel(row, col, r, g, b);
+                        addToFiveColors(new Color(r,g,b));
+                    }
+                }
                 });
-                //JButton button1 = new JButton();
-                //currentRow.add(button);
-                //buttonLayout.add(button);
                 currentRow.add(button);
                 buttonLayout.add(button);
             }
             buttonGrid.add(currentRow);
         }
 }
-
+//- Creats a panel where the user is allowed to choose a color using sliders.(RGB) Small preview shown as the user changes sliders
     private void colorChooser(){
+//- Two panels, one for sliders, the other is for the preview color
         colorChooserPanel = new JPanel();
         colorPreviewPanel = new JPanel();
-
+//- RGB sliders with a range of 0 - 255, sliders defualt color set to black 
         redSlider = new JSlider(0,255,0);
         greenSlider = new JSlider(0,255,0);
         blueSlider = new JSlider(0,255,0);
-
+//- Setting the size for the color preview panel, and set to black as default
         colorPreviewPanel.setPreferredSize(new Dimension(50,50));
         colorPreviewPanel.setBackground(new Color(0,0,0));
-
+//- Labels for the sliders, and adding the sliders and preview panel to the color choose panel  
         colorChooserPanel.setLayout(new GridLayout(0,2));
         colorChooserPanel.add(new JLabel("Red:"));
         colorChooserPanel.add(redSlider);
@@ -144,7 +202,7 @@ public class BitmapGUI extends JFrame{
         colorChooserPanel.add(new JLabel("Blue:"));
         colorChooserPanel.add(blueSlider);
         colorChooserPanel.add(colorPreviewPanel);
-
+//- Update the color preview panel as the user changes the sliders
         ChangeListener colorListener = new ChangeListener() {
             public void stateChanged (ChangeEvent e){
                 int r = redSlider.getValue();
@@ -158,7 +216,9 @@ public class BitmapGUI extends JFrame{
         greenSlider.addChangeListener(colorListener);
         blueSlider.addChangeListener(colorListener);
     }
-
+// - Adds a color to the last five color list
+//- If the color already is in the list it will not be added again
+//- If there are more than 5 colors in the list, the last color will be removed to add the new color 
     private void addToFiveColors(Color c){
         if(lastFiveColors.contains(c)){
             return; // color already exists in the list,
@@ -169,24 +229,26 @@ public class BitmapGUI extends JFrame{
         }
         updateLastFiveColorsPanel();
     }
-
+//- Building the last five colors panel, where the user is allowed to view and select one of the last five colors used.
+//- Sliders and color preview will update to the selected color.
     private void buildLastFiveColorsPanel(){
         lastFiveColorsPanel = new JPanel[5]; // array to hold the 5 colors
         lastFiveColorsLayout = new JPanel(); // panel to hold the colors
         lastFiveColorsLayout.setLayout(new GridLayout(1,5)); // one row 5 columns
         for(int i=0; i < 5; i++){
             lastFiveColorsPanel[i] = new JPanel(); // creating new panel for each color
-            lastFiveColorsPanel[i].setPreferredSize(new Dimension(30,30)); 
+            lastFiveColorsPanel[i].setPreferredSize(new Dimension(30,30)); // Set the size of the color panel
             lastFiveColorsPanel[i].setBorder(javax.swing.BorderFactory.createLineBorder(Color.BLACK)); // ouline for each color panel to be visable
-            if(i < lastFiveColors.size()){ // if the 
+            if(i < lastFiveColors.size()){ 
                 lastFiveColorsPanel[i].setBackground(lastFiveColors.get(i)); // set the background color to the color in the list
             }
             else{
                 lastFiveColorsPanel[i].setBackground(Color.WHITE); // By default, there is no 5 colors in the list so set them as white
             }
             lastFiveColorsLayout.add(lastFiveColorsPanel[i]); // add the color panel to the layout
-            int index = i; 
+            int index = i;
             lastFiveColorsPanel[i].addMouseListener(new java.awt.event.MouseAdapter() {
+                // When the user clicks on one of the last five colors, it will update the sliders and color preview to that color
                 public void mouseClicked(java.awt.event.MouseEvent evt) {
                     if(index >= lastFiveColors.size()) {
                         return; // No color to select
@@ -200,8 +262,8 @@ public class BitmapGUI extends JFrame{
         }
         updateLastFiveColorsPanel();
     }
-
-    private void updateLastFiveColorsPanel(){ // Update the last five colors panel to show the current colors in the list
+//- Update the last five colors panel to show the current colors in the list
+    private void updateLastFiveColorsPanel(){
         for(int i=0; i < 5; i++){
             if(i < lastFiveColors.size()){
                 lastFiveColorsPanel[i].setBackground(lastFiveColors.get(i)); 
@@ -211,10 +273,11 @@ public class BitmapGUI extends JFrame{
             }
         }
     }
-
+//- Button called "Create Bitmap" where the user is allowed to creat a bitmap file
+//- User is prompted to choose a location and name for the file.
     private void buildBitmap(){
         bitMapButton = new JButton("Create Bitmap");
-
+        
         bitMapButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e){
@@ -229,7 +292,8 @@ public class BitmapGUI extends JFrame{
             }
         });
     }
-
+//- Checkbox named "Advanced" set to the top of the panel next to the bitmap button
+//- This is where the user is allowed to view advanced options once checked.
     private void addvancedButton(){
         advancedOptionButton = new JCheckBox("Advanced");
         JPanel topPanel = new JPanel();
