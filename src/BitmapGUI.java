@@ -48,7 +48,7 @@ public class BitmapGUI extends JFrame{
     private ArrayList <Color> lastFiveColors;
 
     public BitmapGUI(){
-
+//- Text file where the user is prompted to enter the height and width of the icon they want to create
         heightTXT = new JTextField();
         widthTXT = new JTextField();
 
@@ -78,7 +78,12 @@ public class BitmapGUI extends JFrame{
         catch (NumberFormatException e) {System.out.println("Enter a number greater than zero for both dimensions.");};
 
         }
-
+//- Creat a new icon with the dimensions entered by the user
+//- Build the grid, color chooser, last five colors panel, bitmap button, and advanced button
+//- Add the panels to the frane, at desired locations
+//- Close the app when the 'X' button is clicked
+//- Size the window to fit all the components
+//- Show the window on the screen
         icon = new Icon(height, width);
         buildGrid();
         colorChooser();
@@ -108,8 +113,6 @@ public class BitmapGUI extends JFrame{
                 button.setOpaque(true);
                 button.setContentAreaFilled(true);
                 button.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e){
                     }
                 });
                 //JButton button1 = new JButton();
