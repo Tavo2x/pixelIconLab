@@ -51,7 +51,6 @@ public class BitmapGUI extends JFrame{
 //- Text file where the user is prompted to enter the height and width of the icon they want to create
         heightTXT = new JTextField();
         widthTXT = new JTextField();
-
 //- Panel where the user is prompted to enter the dimensions of the icon
         panelDimensions = new JPanel();
         panelDimensions.setLayout(new GridLayout(2,2));
