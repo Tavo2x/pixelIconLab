@@ -97,7 +97,8 @@ public class BitmapGUI extends JFrame{
         pack();		 
         setVisible(true);
     }
-
+//- Building the grid of buttons based on users input
+//- Each button is a pixel, and when clicked it will change the color of the pixel to the color selected by the user using the sliders
     private void buildGrid(){
         buttonGrid = new ArrayList<ArrayList<JButton>>();
         lastFiveColors = new ArrayList<Color>();
@@ -116,6 +117,7 @@ public class BitmapGUI extends JFrame{
                 @Override
                 public void actionPerformed(ActionEvent e){
                     if (advancedOptionButton.isSelected()){
+                        //- Advance options: Fill tab (rows/cols input)
                         JPanel fillPanel = new JPanel();
                         fillPanel.setLayout(new GridLayout(2,2));
                         JTextField rows = new JTextField();
@@ -124,7 +126,8 @@ public class BitmapGUI extends JFrame{
                         fillPanel.add(rows);
                         fillPanel.add(new JLabel("Cols: "));
                         fillPanel.add(cols);
-
+                        //- Import tab (choose BMP file)
+                        //- This is where the user can choose a BMP file to import, but is not complete yet
                         JPanel importPanel = new JPanel();
                         JButton chooseBMP = new JButton("Choose BMP File");
                         importPanel.add(chooseBMP);
@@ -134,10 +137,11 @@ public class BitmapGUI extends JFrame{
                                 JFileChooser bmpChooser = new JFileChooser();
                                 int chooserResult = bmpChooser.showOpenDialog(BitmapGUI.this);
                                 if(chooserResult == JFileChooser.APPROVE_OPTION){
-                                    File selectedFile = bmpChooser.getSelectedFile();
+                                    File selectedFile = bmpChooser.getSelectedFile(); // BMP file selected not complete 
                             }
                           }
                         });
+                        //- Create a tabbed pane to hold the fill and import panels
                         JTabbedPane tabbedPane = new JTabbedPane();
                         tabbedPane.addTab("Fill", fillPanel);
                         tabbedPane.addTab("Import", importPanel);
@@ -165,6 +169,7 @@ public class BitmapGUI extends JFrame{
                         }
                     }
                     else{
+                        //- Default mode. Change the color of the clicked pixel to the selected color
                         int r = redSlider.getValue();
                         int g = greenSlider.getValue();
                         int b = blueSlider.getValue();
@@ -245,7 +250,7 @@ public class BitmapGUI extends JFrame{
                 lastFiveColorsPanel[i].setBackground(Color.WHITE); // By default, there is no 5 colors in the list so set them as white
             }
             lastFiveColorsLayout.add(lastFiveColorsPanel[i]); // add the color panel to the layout
-            int index = i;
+            int index = i; //
             lastFiveColorsPanel[i].addMouseListener(new java.awt.event.MouseAdapter() {
                 // When the user clicks on one of the last five colors, it will update the sliders and color preview to that color
                 public void mouseClicked(java.awt.event.MouseEvent evt) {
