@@ -4,8 +4,9 @@ import java.awt.Dimension;
 import java.awt.GridLayout; 
 import java.awt.event.ActionEvent; 
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
-
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame; 
@@ -178,6 +179,18 @@ public class BitmapGUI extends JFrame{
                         addToFiveColors(new Color(r,g,b));
                     }
                 }
+                });
+                button.addMouseListener(new MouseAdapter(){
+                    @Override
+                    public void mouseEntered(MouseEvent e){
+                        if (e.isShiftDown()){
+                            int r = redSlider.getValue();
+                            int g = greenSlider.getValue();
+                            int b = blueSlider.getValue();
+                            button.setBackground(new Color(r,g,b));
+                            icon.setPixel(row, col, r, g, b);
+                        }
+                    }
                 });
                 currentRow.add(button);
                 buttonLayout.add(button);
