@@ -180,6 +180,8 @@ public class BitmapGUI extends JFrame{
                     }
                 }
                 });
+//- if the user holds down the shift key with a color selected and hovers over a button,
+//- the button will change to the selectec color, allowing the user to draw
                 button.addMouseListener(new MouseAdapter(){
                     @Override
                     public void mouseEntered(MouseEvent e){
