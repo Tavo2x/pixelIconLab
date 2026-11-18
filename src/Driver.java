@@ -42,8 +42,15 @@ public class Driver {
 
         try { UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName()); } catch (Exception e) { e.printStackTrace(); }
 
-        new BitmapGUI();
+        //new BitmapGUI();
 
+        int height = 5;
+        int width = 5;
+        IconEdit iconEdit = new IconEdit();
+        new BitmapGUI(height, width, iconEdit);
+
+        BitmapGUI second = new BitmapGUI(height, width, iconEdit);
+        second.setLocation(600, 100);
 
     }
 }
