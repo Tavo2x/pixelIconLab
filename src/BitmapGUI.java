@@ -1,3 +1,4 @@
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -21,11 +22,12 @@ import javax.swing.event.ChangeListener;
 import javax.swing.JFileChooser;
 import java.io.File;
 
-public class BitmapGUI extends JFrame{
+public class BitmapGUI extends JFrame implements IconObserver{
 
 //- Varriables used throughout
     int height = 0;
     int width = 0;
+    private IconEdit iconEdit;
 
     private JButton bitMapButton;
     private JCheckBox advancedOptionButton;
@@ -98,6 +100,42 @@ public class BitmapGUI extends JFrame{
         pack();		 
         setVisible(true);
     }
+    public BitmapGUI(int height, int width, IconEdit iconEdit){
+        this.height = height;
+        this.width = width;  
+        this.iconEdit = iconEdit;
+
+        icon = new Icon(height, width);
+        buildGrid();
+        colorChooser();
+        buildLastFiveColorsPanel();
+        buildBitmap();
+        addvancedButton();
+        add(buttonLayout, BorderLayout.WEST);
+        add(colorChooserPanel, BorderLayout.EAST);
+        add(lastFiveColorsLayout, BorderLayout.SOUTH);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        pack();		 
+        setVisible(true);
+        iconEdit.attach(this);
+    }
+
+    @Override
+    public void editMade(IconEdit edit){
+        applyEdit(edit.getRow(), edit.getCol(), edit.getColor());
+    }
+
+    private void applyEdit(int row, int col, Color color){
+        buttonGrid.get(row).get(col).setBackground(color);
+        icon.setPixel(row, col, color.getRed(), color.getGreen(), color.getBlue());
+    }
+
+    private void userEdit(int row, int col, Color color){
+        applyEdit(row, col, color);
+        iconEdit.setEdit(this, row, col, color);
+    }
+
+
 //- Building the grid of buttons based on users input
 //- Each button is a pixel, and when clicked it will change the color of the pixel to the color selected by the user using the sliders
     private void buildGrid(){
@@ -158,8 +196,9 @@ public class BitmapGUI extends JFrame{
                                             int red = redSlider.getValue();
                                             int green = greenSlider.getValue();
                                             int blue = blueSlider.getValue();
-                                            buttonGrid.get(r).get(c).setBackground(new Color(red,green,blue));
-                                            icon.setPixel(r,c,red,green,blue);
+                                            //buttonGrid.get(r).get(c).setBackground(new Color(red,green,blue));
+                                            //icon.setPixel(r,c,red,green,blue); 
+                                            userEdit(r, c, new Color(red,green,blue));
                                             addToFiveColors(new Color(red,green,blue));
                                         }
                                     }
@@ -174,8 +213,9 @@ public class BitmapGUI extends JFrame{
                         int r = redSlider.getValue();
                         int g = greenSlider.getValue();
                         int b = blueSlider.getValue();
-                        button.setBackground(new Color(r,g,b));
-                        icon.setPixel(row, col, r, g, b);
+                        //button.setBackground(new Color(r,g,b));
+                        //icon.setPixel(row, col, r, g, b);
+                        userEdit(row, col, new Color(r,g,b));
                         addToFiveColors(new Color(r,g,b));
                     }
                 }
@@ -189,8 +229,9 @@ public class BitmapGUI extends JFrame{
                             int r = redSlider.getValue();
                             int g = greenSlider.getValue();
                             int b = blueSlider.getValue();
-                            button.setBackground(new Color(r,g,b));
-                            icon.setPixel(row, col, r, g, b);
+                            //button.setBackground(new Color(r,g,b));
+                            //icon.setPixel(row, col, r, g, b);
+                            userEdit(row, col, new Color(r,g,b));
                         }
                     }
                 });
