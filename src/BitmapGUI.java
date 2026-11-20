@@ -31,6 +31,10 @@ public class BitmapGUI extends JFrame implements IconObserver{
 
     private JButton bitMapButton;
     private JCheckBox advancedOptionButton;
+    private JCheckBox attachedCheckBox;
+    private JCheckBox verticalInvertBox;
+    private JCheckBox horizontalInvertBox;
+    private JCheckBox randomColorBox;
 
     private JTextField heightTXT;
     private JTextField widthTXT;
@@ -111,7 +115,7 @@ public class BitmapGUI extends JFrame implements IconObserver{
         buildLastFiveColorsPanel();
         buildBitmap();
         addvancedButton();
-        add(buttonLayout, BorderLayout.WEST);
+        add(buttonLayout, BorderLayout.CENTER);
         add(colorChooserPanel, BorderLayout.EAST);
         add(lastFiveColorsLayout, BorderLayout.SOUTH);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -122,7 +126,23 @@ public class BitmapGUI extends JFrame implements IconObserver{
 
     @Override
     public void editMade(IconEdit edit){
-        applyEdit(edit.getRow(), edit.getCol(), edit.getColor());
+        BitmapEdit e = edit;
+
+        boolean ownEdit = (edit.getSource() == this);
+        boolean othersAttached = edit.getObserverCount() > 1;
+        if(!ownEdit && othersAttached){
+            if(verticalInvertBox.isSelected()){
+                e = new VerticalInvert(e, height);
+            }
+            if(horizontalInvertBox.isSelected()){
+                e = new HorizontalInvert(e, width);
+            }
+            if(randomColorBox.isSelected()){
+                e = new RandomColor(e);
+            }            
+        }
+
+        applyEdit(e.getRow(), e.getCol(), e.getColor());
     }
 
     private void applyEdit(int row, int col, Color color){
@@ -132,7 +152,12 @@ public class BitmapGUI extends JFrame implements IconObserver{
 
     private void userEdit(int row, int col, Color color){
         applyEdit(row, col, color);
-        iconEdit.setEdit(this, row, col, color);
+        if(attachedCheckBox.isSelected()){
+            iconEdit.setEdit(this, row, col, color);
+        }
+        else{
+            applyEdit(row, col, color);
+        }
     }
 
 
@@ -356,9 +381,28 @@ public class BitmapGUI extends JFrame implements IconObserver{
 //- This is where the user is allowed to view advanced options once checked.
     private void addvancedButton(){
         advancedOptionButton = new JCheckBox("Advanced");
+        attachedCheckBox = new JCheckBox("Attached", true);
+        verticalInvertBox = new JCheckBox("Vertical Invert");
+        horizontalInvertBox = new JCheckBox("Horizontal Invert");
+        randomColorBox = new JCheckBox("Random Color");
         JPanel topPanel = new JPanel();
         topPanel.add(bitMapButton);
         topPanel.add(advancedOptionButton);
+        topPanel.add(attachedCheckBox);
+        topPanel.add(verticalInvertBox);
+        topPanel.add(horizontalInvertBox);
+        topPanel.add(randomColorBox);
         add(topPanel, BorderLayout.NORTH);
+        attachedCheckBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed (ActionEvent e){
+                if(attachedCheckBox.isSelected()){
+                    iconEdit.attach(BitmapGUI.this);
+                }
+                else{
+                    iconEdit.detach(BitmapGUI.this);
+                }
+            }
+        });
     }
 }
