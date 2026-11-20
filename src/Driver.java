@@ -1,3 +1,8 @@
+import java.awt.GridLayout;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.UIManager;
 
 public class Driver {
@@ -44,13 +49,62 @@ public class Driver {
 
         //new BitmapGUI();
 
-        int height = 5;
-        int width = 5;
+        JTextField heightTXT = new JTextField();
+        JTextField widthTXT = new JTextField();
+        JTextField windowsTXT = new JTextField();
+
+        JPanel panelWindow = new JPanel();
+        panelWindow.setLayout(new GridLayout(1,2));;
+        panelWindow.add(new JLabel("Enter the number of windows: "));
+        panelWindow.add(windowsTXT);
+
+        JPanel panelDimensions = new JPanel();
+        panelDimensions.setLayout(new GridLayout(2,2));
+        panelDimensions.add(new JLabel("Height: "));
+        panelDimensions.add(heightTXT);
+        panelDimensions.add(new JLabel("Width: "));
+        panelDimensions.add(widthTXT);
+
+        int height = 0;
+        int width = 0;
+        int windows = 0;
+
+
+        while (true){
+            int numWind = JOptionPane.showConfirmDialog(null, panelWindow,"Number of Windoes:", JOptionPane.OK_CANCEL_OPTION);
+            if(numWind != JOptionPane.OK_OPTION){
+                System.exit(0);
+            }
+            try{
+                windows = Integer.parseInt(windowsTXT.getText());
+                if(windows > 0){
+                    break;
+                }
+            }
+            catch(NumberFormatException e){
+                System.out.println("Enter a number greater than zero for the number of windows you wish to see.");
+            }
+        }
+        while (true){
+            int result = JOptionPane.showConfirmDialog(null, panelDimensions, "Enter Icon Dimension: ", JOptionPane.OK_CANCEL_OPTION);
+            if(result != JOptionPane.OK_OPTION){
+                System.exit(0);
+            }
+            try {
+                height = Integer.parseInt(heightTXT.getText());
+                width = Integer.parseInt(widthTXT.getText());
+                if(height > 0 && width > 0){
+                    break;
+                }
+            }
+            catch (NumberFormatException e) {
+                System.out.println("Enter a number greater than zero for both dimensions.");
+            }
+        }
         IconEdit iconEdit = new IconEdit();
-        new BitmapGUI(height, width, iconEdit);
-
-        BitmapGUI second = new BitmapGUI(height, width, iconEdit);
-        second.setLocation(600, 100);
-
+        for(int i = 0; i < windows; i++){
+            BitmapGUI window = new BitmapGUI(height, width, iconEdit);
+            window.setLocation(50 + i * 40, 50 + i * 40);            
+        }
     }
 }
