@@ -1,12 +1,14 @@
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Observable;
 
-public class IconEdit {
+public class IconEdit implements BitmapEdit{
 //- Variables
     private ArrayList<IconObserver> observers;
     private int row;
     private int col;
     private Color color;
+    private IconObserver source;
 
 //- Constructor, creating list of observers
     public IconEdit(){
@@ -24,13 +26,12 @@ public class IconEdit {
     }
 //- Editis the edited pixel, notifying the observers of said edit
     public void setEdit(IconObserver source, int rowEddited, int colEddited, Color colorEddited){
+        this.source = source;
         row = rowEddited;
         col = colEddited;
         color = colorEddited;
         for (IconObserver o : observers){
-            if(o != source){
-               o.editMade(this);
-            }
+            o.editMade(this);
         }
     }
 //- Returns the row
@@ -44,5 +45,13 @@ public class IconEdit {
 //- Returns the color
     public Color getColor(){
         return color;
+    }
+//-
+    public IconObserver getSource(){
+        return source;
+    }
+//- 
+    public int getObserverCount(){
+        return observers.size();
     }
 }
